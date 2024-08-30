@@ -5,7 +5,6 @@ import random
 import gdown
 import json
 
-@st.cache_data
 def load_data():
     try:
         gdown.download(f"https://drive.google.com/uc?id={st.secrets['ACG']}", 'acg.json', quiet=False)

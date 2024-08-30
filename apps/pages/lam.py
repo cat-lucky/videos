@@ -33,7 +33,7 @@ if load_data():
 
     if CATEGORY:
         st.markdown(f"<div style='text-align: center; font-size: 24px;'>You selected: <b>{CATEGORY} 🎬</b></div>", unsafe_allow_html=True)
-        showVideos(CATEGORY, './data/lam.json')
+        showVideos(CATEGORY, 'lam.json')
     else:
         st.info("Please select a category to view the videos.", icon="ℹ️")
 

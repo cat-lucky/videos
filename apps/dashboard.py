@@ -19,32 +19,6 @@ def dashboard():
     </div>
     """, unsafe_allow_html=True)
 
-    if st.session_state.logged_in:
-        st.markdown("""
-        <h2>✨ All the Categories are: ✨</h2>
-        <h5>✨ Animations, Cartoons & Graphics ✨</h5>
-        <ul style='list-style-type: none;'>
-            <li>🔞 Hentai</li>
-        </ul>
-
-        <h5>✨ Live Action Movies ✨</h5>
-        <ul style='list-style-type: none;'>
-            <li>🔪 Brutal</li>
-            <li>👩‍❤️‍👨 Cheat</li>
-            <li>👨‍👩‍👧 Family</li>
-            <li>🧹 Maid</li>
-            <li>🏫 School</li>
-            <li>👩‍💼 Secretary</li>
-            <li>👩‍❤️‍👨 Sister</li>
-            <li>👦 StepBrother</li>
-            <li>👩🏻‍🦰 StepMom</li>
-            <li>👩🏻‍🦰 StepSister</li>
-            <li>👤 Stranger</li>
-            <li>🦺 Stuck</li>
-        </ul>
-        <hr />
-        """, unsafe_allow_html=True)
-
     st.markdown("<p style='text-align: center; font-size: 18px;'>Enjoy watching videos! 🍿</p>", unsafe_allow_html=True)
     st.markdown("""
     <p style='text-align: center; color: gray;'>

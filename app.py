@@ -1,19 +1,22 @@
-from streamlit_local_storage import LocalStorage
+from streamlit_ws_localstorage import injectWebsocketCode
 from utils.animatedText import animated_text
 from auth.login import login
 from apps.main import main
 import streamlit as st
 import datetime
+import uuid
 
-localS = LocalStorage(key="storage_init", pause=2)
-st.write(localS.getAll())
+conn = injectWebsocketCode(hostPort='wsauthserver.supergroup.ai', uid=str(uuid.uuid1()))
+conn.setLocalStorageVal("password", "")
+conn.setLocalStorageVal("expiration_date", "")
 
-def is_credentials_valid():
-  if localS.getAll():
-    expiration_date = datetime.datetime.fromisoformat(localS.getItem("expiration_date"))
+def getPassword():
+  expiration_date_conn = conn.getLocalStorageVal("expiration_date")
+  if expiration_date_conn is not None and expiration_date_conn != "":
+    expiration_date = datetime.datetime.fromisoformat(expiration_date_conn)
     if datetime.datetime.now() < expiration_date:
-      return True
-  return False
+      return conn.getLocalStorageVal("password")
+  return None
 
 def app():
   st.markdown(f"<h1 style='text-align: center;'>{animated_text(f'Welcome to Videos World 🌟')}</h1>", unsafe_allow_html=True)
@@ -27,17 +30,8 @@ def app():
   st.markdown(f"<div style='text-align: center; font-size: 18px;'>Enjoy watching the videos! 🎉</div>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
-  if is_credentials_valid():
-    password = localS.getItem("password")
-    if password is not None:
-      if password == st.secrets['SECRET_KEY']:
-        app()
-      else:
-        if localS.getAll():
-          localS.deleteAll()
-    else:
-      login(localS)
+  password = getPassword()
+  if password is not None and password == st.secrets['SECRET_KEY']:
+    app()
   else:
-    if localS.getAll():
-      localS.deleteAll()
-    login(localS)
+    login(conn)

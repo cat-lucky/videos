@@ -1,20 +1,22 @@
 import streamlit as st
 import datetime
 
-def save_credentials(localS, password, days):
+def save_credentials(conn, password, days):
   expiration_date = datetime.datetime.now() + datetime.timedelta(days=days)
 
   try:
-    localS.setItem("password", str(password), key="password_key")
+    conn.setLocalStorageVal("password", str(password))
   except Exception as e:
     st.error(f'Error saving password: {e}', icon="🚨")
+    st.stop()
 
   try:
-    localS.setItem("expiration_date", expiration_date.isoformat(), key="expiration_date_key")
+    conn.setLocalStorageVal("expiration_date", expiration_date.isoformat())
   except Exception as e:
     st.error(f'Error saving expiration date: {e}', icon="🚨")
+    st.stop()
 
-def login(localS):
+def login(conn):
   st.header("Login")
   col1, col2 = st.columns(2)
   with col1:
@@ -26,7 +28,7 @@ def login(localS):
   if st.button("Start Application", key="start_app_btn_key"):
     if password == st.secrets['SECRET_KEY']:
       days = 30 if remember_me else 2
-      save_credentials(localS, password, days)
+      save_credentials(conn, password, days)
       st.success(f"Credentials Saved for {days}!", icon="✅")
       st.rerun()
     st.error("Incorrect Secret Key.", icon="🚨")

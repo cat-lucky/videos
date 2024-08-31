@@ -13,7 +13,7 @@ def load_data(FILE):
         return False
 
 def main(NAME, FILE):
-    st.markdown(f"<h4 style='text-align: center;'>{animated_text(f'Welcome to {NAME.title()} 🌟')}</h4>", unsafe_allow_html=True, key="h4")
+    st.markdown(f"<h4 style='text-align: center;'>{animated_text(f'Welcome to {NAME.title()} 🌟')}</h4>", unsafe_allow_html=True)
 
     if load_data(FILE):
         with open(f'{FILE.lower()}.json') as file:

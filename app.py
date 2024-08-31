@@ -8,8 +8,8 @@ localS = LocalStorage()
 
 def save_credentials(password, days):
   expiration_date = datetime.datetime.now() + datetime.timedelta(days=days)
-  localS.setItem(itemKey="password", itemValue=f'{password}')
-  localS.setItem(itemKey="expiration_date", itemValue=f"{expiration_date.isoformat()}")
+  localS.setItem(itemKey="password", itemValue=f'{password}', key="password")
+  localS.setItem(itemKey="expiration_date", itemValue=f"{expiration_date.isoformat()}", key="expiration_date")
 
 def is_credentials_valid():
   if localS.getAll():
@@ -37,7 +37,7 @@ def login():
     st.error("Incorrect Secret Key.", icon="🚨")
 
 def app():
-  st.markdown(f"<h1 style='text-align: center;'>{animated_text(f'Welcome to Videos World 🌟')}</h1>", unsafe_allow_html=True, key="h1")
+  st.markdown(f"<h1 style='text-align: center;'>{animated_text(f'Welcome to Videos World 🌟')}</h1>", unsafe_allow_html=True)
   FILES = {"ANIMATED WORLD": "ACG", "LIVE ACTION MOVIES": "LAM"}
   choice = st.selectbox("Select your choice", [None] + list(FILES.keys()), key="choice")
   if choice is not None:

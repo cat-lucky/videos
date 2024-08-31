@@ -4,14 +4,11 @@ import webbrowser
 # Importing the helper functions
 from data.loadData import loadData
 from utils.calculateTime import calculateTime
-from utils.randomColor import randomColor
 from utils.downloadVideo import downloadVideo
+from utils.randomColor import randomColor
 
 def showVideos(CATEGORY, FILE_PATH):
     DATA = loadData(CATEGORY, FILE_PATH)
-
-    st.markdown(f"<h1 style='text-align: center;'>{CATEGORY} Videos 🎬</h1>", unsafe_allow_html=True)
-
     INDEX = 1
     for item in DATA:
         st.markdown(f"---")

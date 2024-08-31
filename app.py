@@ -37,9 +37,9 @@ def login():
     st.error("Incorrect Secret Key.", icon="🚨")
 
 def app():
-  st.markdown(f"<h1 style='text-align: center;'>{animated_text(f'Welcome to Videos World 🌟')}</h1>", unsafe_allow_html=True)
+  st.markdown(f"<h1 style='text-align: center;'>{animated_text(f'Welcome to Videos World 🌟')}</h1>", unsafe_allow_html=True, key="h1")
   FILES = {"ANIMATED WORLD": "ACG", "LIVE ACTION MOVIES": "LAM"}
-  choice = st.selectbox("Select your choice", [None] + list(FILES.keys()))
+  choice = st.selectbox("Select your choice", [None] + list(FILES.keys()), key="choice")
   if choice is not None:
     main(choice, FILES[choice])
   else:

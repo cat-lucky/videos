@@ -6,8 +6,14 @@ localS = LocalStorage()
 
 def save_credentials(password, days):
   expiration_date = datetime.datetime.now() + datetime.timedelta(days=days)
-  localS.setItem(itemKey="password", itemValue=f'{password}', key="password")
-  localS.setItem(itemKey="expiration_date", itemValue=f"{expiration_date.isoformat()}", key="expiration_date")
+
+  itemKey="password"
+  itemValue=f'{password}'
+  localS.setItem(itemKey, itemValue, key="password_key")
+
+  itemKey="expiration_date"
+  itemValue=f"{expiration_date.isoformat()}"
+  localS.setItem(itemKey, itemValue, key="expiration_date_key")
 
 def login():
   st.header("Login")
@@ -15,7 +21,7 @@ def login():
   with col1:
     name = st.text_input("Enter your name", key="name")
   with col2:
-    password = st.text_input("Enter your secret key", type="password", key="key")
+    password = st.text_input("Enter your secret key", type="password", key="secret_key")
   remember_me = st.checkbox("Remember me for 30 days")
 
   if st.button("Start Application"):

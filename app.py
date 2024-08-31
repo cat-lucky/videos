@@ -54,15 +54,9 @@ if __name__ == "__main__":
       if password == st.secrets['SECRET_KEY']:
         app()
       else:
-        if localS.getItem('password'):
-          localS.deleteItem("password")
-        if localS.getItem('expiration_date'):
-          localS.deleteItem("expiration_date")
+        localS.deleteAll()
     else:
       login()
   else:
-    if localS.getItem('password'):
-      localS.deleteItem("password", key="password")
-    if localS.getItem('expiration_date'):
-      localS.deleteItem("expiration_date", key="expiration_date")
+    localS.deleteAll()
     login()

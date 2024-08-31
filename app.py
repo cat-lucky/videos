@@ -17,13 +17,13 @@ def is_credentials_valid():
 def app():
   st.markdown(f"<h1 style='text-align: center;'>{animated_text(f'Welcome to Videos World 🌟')}</h1>", unsafe_allow_html=True)
   FILES = {"ANIMATED WORLD": "ACG", "LIVE ACTION MOVIES": "LAM"}
-  choice = st.selectbox("Select your choice", [None] + list(FILES.keys()), key="choice")
+  choice = st.selectbox("Select your choice", [None] + list(FILES.keys()), key="choice_key")
   if choice is not None:
     main(choice, FILES[choice])
   else:
     st.info("Please select a category to watch the videos.", icon="ℹ️")
-    st.markdown("<hr>", unsafe_allow_html=True)
-    st.markdown(f"<div style='text-align: center; font-size: 18px;'>Enjoy watching the videos! 🎉</div>", unsafe_allow_html=True)
+  st.markdown("<hr>", unsafe_allow_html=True)
+  st.markdown(f"<div style='text-align: center; font-size: 18px;'>Enjoy watching the videos! 🎉</div>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
   if is_credentials_valid():

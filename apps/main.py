@@ -14,21 +14,14 @@ def load_data(FILE):
 
 def main(NAME, FILE):
     st.markdown(f"<h4 style='text-align: center;'>{animated_text(f'Welcome to {NAME.title()} 🌟')}</h4>", unsafe_allow_html=True)
-
     if load_data(FILE):
         with open(f'{FILE.lower()}.json') as file:
             data = json.load(file)
-
         CATEGORIES = {item['category'] for item in data if item['category']}
-        CATEGORY = st.selectbox("Choose a Category 🗂️", [None] + sorted(CATEGORIES), key="category")
-
+        CATEGORY = st.selectbox("Choose a Category 🗂️", [None] + sorted(CATEGORIES), key="category_key")
         if CATEGORY:
             showVideos(CATEGORY, f'{FILE.lower()}.json')
         else:
             st.info("Please select a category to watch the videos.", icon="ℹ️")
-
-        st.markdown("<hr>", unsafe_allow_html=True)
-        st.markdown(f"<div style='text-align: center; font-size: 18px;'>Enjoy watching the videos! 🎉</div>", unsafe_allow_html=True)
-
     else:
         st.warning("Failed to load data. Please try again later.", icon="⚠️")

@@ -8,11 +8,11 @@ def save_credentials(password, days):
   expiration_date = datetime.datetime.now() + datetime.timedelta(days=days)
 
   itemKey="password"
-  itemValue=f'{password}'
+  itemValue=str(password)
   localS.setItem(itemKey, itemValue, key="password_key")
 
   itemKey="expiration_date"
-  itemValue=f"{expiration_date.isoformat()}"
+  itemValue=str(expiration_date.isoformat())
   localS.setItem(itemKey, itemValue, key="expiration_date_key")
 
 def login():

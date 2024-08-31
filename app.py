@@ -12,7 +12,7 @@ def save_credentials(password, days):
   localS.setItem("expiration_date", expiration_date.isoformat(), key="expiration_date")
 
 def is_credentials_valid():
-  if localS.getAll() != {}:
+  if localS.getAll() and localS.getItem("expiration_date"):
     expiration_date = datetime.datetime.fromisoformat(localS.getItem("expiration_date"))
     if datetime.datetime.now() < expiration_date:
       return True
@@ -22,9 +22,9 @@ def login():
   st.header("Login")
   col1, col2 = st.columns(2)
   with col1:
-    name = st.text_input("Enter your name")
+    name = st.text_input("Enter your name", key="name")
   with col2:
-    password = st.text_input("Enter your secret key", type="password")
+    password = st.text_input("Enter your secret key", type="password", key="password")
   remember_me = st.checkbox("Remember me for 30 days")
 
   if st.button("Start Application"):

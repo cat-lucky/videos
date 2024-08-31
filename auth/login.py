@@ -3,18 +3,8 @@ import datetime
 
 def save_credentials(conn, password, days):
   expiration_date = datetime.datetime.now() + datetime.timedelta(days=days)
-
-  try:
-    conn.setLocalStorageVal("password", str(password))
-  except Exception as e:
-    st.error(f'Error saving password: {e}', icon="🚨")
-    st.stop()
-
-  try:
-    conn.setLocalStorageVal("expiration_date", expiration_date.isoformat())
-  except Exception as e:
-    st.error(f'Error saving expiration date: {e}', icon="🚨")
-    st.stop()
+  conn.setLocalStorageVal("password", str(password))
+  conn.setLocalStorageVal("expiration_date", expiration_date.isoformat())
 
 def login(conn):
   st.header("Login")
@@ -29,6 +19,6 @@ def login(conn):
     if password == st.secrets['SECRET_KEY']:
       days = 30 if remember_me else 2
       save_credentials(conn, password, days)
-      st.success(f"Credentials Saved for {days}!", icon="✅")
+      st.success("Credentials Saved!", icon="✅")
       st.rerun()
     st.error("Incorrect Secret Key.", icon="🚨")

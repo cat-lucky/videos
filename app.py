@@ -12,9 +12,7 @@ def save_credentials(password, days):
   localS.setItem("expiration_date", expiration_date.isoformat(), key="expiration_date")
 
 def is_credentials_valid():
-  st.write(localS.getAll())
-  st.write(localS.getItem("expiration_date"))
-  if localS.getAll() != {} and localS.getItem("expiration_date") is not None:
+  if localS.getAll() != {}:
     expiration_date = datetime.datetime.fromisoformat(localS.getItem("expiration_date"))
     if datetime.datetime.now() < expiration_date:
       return True

@@ -54,9 +54,11 @@ if __name__ == "__main__":
       if password == st.secrets['SECRET_KEY']:
         app()
       else:
-        localS.deleteAll()
+        if localS.getAll():
+          localS.deleteAll()
     else:
       login()
   else:
-    localS.deleteAll()
+    if localS.getAll():
+      localS.deleteAll()
     login()

@@ -6,9 +6,16 @@ import streamlit as st
 import datetime
 import uuid
 
-conn = injectWebsocketCode(hostPort='wsauthserver.supergroup.ai', uid=str(uuid.uuid1()))
+if 'expiration_date' not in st.session_state:
+  st.session_state['expiration_date'] = None
+if 'password' not in st.session_state:
+  st.session_state['password'] = None
+
+def server():
+  return injectWebsocketCode(hostPort='wsauthserver.supergroup.ai', uid=str(uuid.uuid1()))
 
 def getPassword():
+  conn = server()
   expiration_date_conn = conn.getLocalStorageVal("expiration_date")
   if expiration_date_conn is not None and expiration_date_conn:
     expiration_date = datetime.datetime.fromisoformat(expiration_date_conn)
@@ -28,10 +35,13 @@ def app():
   st.markdown(f"<div style='text-align: center; font-size: 18px;'>Enjoy watching the videos! 🎉</div>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
-  password = getPassword()
-  if password is not None and password == st.secrets['SECRET_KEY']:
+  if st.session_state['password'] is None:
+    st.session_state['password'] = getPassword()
+
+  if st.session_state['password'] == st.secrets['SECRET_KEY']:
     app()
   else:
+    conn = server()
     conn.setLocalStorageVal("password", None)
     conn.setLocalStorageVal("expiration_date", (datetime.datetime.now() - datetime.timedelta(days=10)).isoformat())
     login(conn)

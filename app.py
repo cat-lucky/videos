@@ -8,8 +8,8 @@ localS = LocalStorage()
 
 def save_credentials(password, days):
   expiration_date = datetime.datetime.now() + datetime.timedelta(days=days)
-  localS.setItem("password", password, key="password")
-  localS.setItem("expiration_date", expiration_date.isoformat(), key="expiration_date")
+  localS.setItem("password", password)
+  localS.setItem("expiration_date", expiration_date.isoformat())
 
 def is_credentials_valid():
   if localS.getAll():

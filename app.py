@@ -6,6 +6,7 @@ import streamlit as st
 import datetime
 
 localS = LocalStorage()
+st.write(localS.getAll())
 
 def is_credentials_valid():
   if localS.getAll():
@@ -35,8 +36,8 @@ if __name__ == "__main__":
         if localS.getAll():
           localS.deleteAll()
     else:
-      login()
+      login(localS)
   else:
     if localS.getAll():
       localS.deleteAll()
-    login()
+    login(localS)

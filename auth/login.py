@@ -1,10 +1,7 @@
-from streamlit_local_storage import LocalStorage
 import streamlit as st
 import datetime
 
-localS = LocalStorage()
-
-def save_credentials(password, days):
+def save_credentials(localS, password, days):
   expiration_date = datetime.datetime.now() + datetime.timedelta(days=days)
 
   itemKey="password"
@@ -15,7 +12,7 @@ def save_credentials(password, days):
   itemValue=str(expiration_date.isoformat())
   localS.setItem(itemKey, itemValue, key="expiration_date_key")
 
-def login():
+def login(localS):
   st.header("Login")
   col1, col2 = st.columns(2)
   with col1:

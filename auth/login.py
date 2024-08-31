@@ -15,7 +15,7 @@ def login():
   with col1:
     name = st.text_input("Enter your name", key="name")
   with col2:
-    password = st.text_input("Enter your secret key", type="password", key="password")
+    password = st.text_input("Enter your secret key", type="password", key="key")
   remember_me = st.checkbox("Remember me for 30 days")
 
   if st.button("Start Application"):

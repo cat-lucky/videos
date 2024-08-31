@@ -4,13 +4,15 @@ import datetime
 def save_credentials(localS, password, days):
   expiration_date = datetime.datetime.now() + datetime.timedelta(days=days)
 
-  itemKey="password"
-  itemValue=str(password)
-  localS.setItem(itemKey, itemValue, key="password_key")
+  try:
+    localS.setItem("password", str(password), key="password_key")
+  except Exception as e:
+    st.error(f'Error saving password: {e}', icon="🚨")
 
-  itemKey="expiration_date"
-  itemValue=str(expiration_date.isoformat())
-  localS.setItem(itemKey, itemValue, key="expiration_date_key")
+  try:
+    localS.setItem("expiration_date", expiration_date.isoformat(), key="expiration_date_key")
+  except Exception as e:
+    st.error(f'Error saving expiration date: {e}', icon="🚨")
 
 def login(localS):
   st.header("Login")
@@ -23,9 +25,8 @@ def login(localS):
 
   if st.button("Start Application", key="start_app_btn_key"):
     if password == st.secrets['SECRET_KEY']:
-      if remember_me:
-        save_credentials(localS, password, 30)
-      else:
-        save_credentials(localS, password, 2)
+      days = 30 if remember_me else 2
+      save_credentials(localS, password, days)
+      st.success(f"Credentials Saved for {days}!", icon="✅")
       st.rerun()
     st.error("Incorrect Secret Key.", icon="🚨")

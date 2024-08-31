@@ -24,8 +24,8 @@ def login(localS):
   if st.button("Start Application", key="start_app_btn_key"):
     if password == st.secrets['SECRET_KEY']:
       if remember_me:
-        save_credentials(password, 30)
+        save_credentials(localS, password, 30)
       else:
-        save_credentials(password, 2)
+        save_credentials(localS, password, 2)
       st.rerun()
     st.error("Incorrect Secret Key.", icon="🚨")

@@ -7,12 +7,12 @@ import datetime
 import uuid
 
 conn = injectWebsocketCode(hostPort='wsauthserver.supergroup.ai', uid=str(uuid.uuid1()))
-conn.setLocalStorageVal("password", "")
-conn.setLocalStorageVal("expiration_date", "")
+conn.setLocalStorageVal("password", None)
+conn.setLocalStorageVal("expiration_date", (datetime.datetime.now() - datetime.timedelta(days=10)).isoformat())
 
 def getPassword():
   expiration_date_conn = conn.getLocalStorageVal("expiration_date")
-  if expiration_date_conn is not None and expiration_date_conn != "":
+  if expiration_date_conn is not None and expiration_date_conn:
     expiration_date = datetime.datetime.fromisoformat(expiration_date_conn)
     if datetime.datetime.now() < expiration_date:
       return conn.getLocalStorageVal("password")

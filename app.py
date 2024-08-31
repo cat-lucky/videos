@@ -5,7 +5,7 @@ from apps.main import main
 import streamlit as st
 import datetime
 
-localS = LocalStorage()
+localS = LocalStorage(key="storage_init", pause=2)
 st.write(localS.getAll())
 
 def is_credentials_valid():

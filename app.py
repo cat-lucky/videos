@@ -1,5 +1,6 @@
 from streamlit_ws_localstorage import injectWebsocketCode
 from utils.animatedText import animated_text
+from apps.editFile import editFile
 from auth.login import login
 from apps.main import main
 import streamlit as st
@@ -25,10 +26,13 @@ def getPassword():
 
 def app():
   st.markdown(f"<h1 style='text-align: center;'>{animated_text(f'Welcome to Videos World 🌟')}</h1>", unsafe_allow_html=True)
-  FILES = {"ANIMATED WORLD": "ACG", "LIVE ACTION MOVIES": "LAM"}
+  FILES = {"ANIMATED WORLD": "ACG", "LIVE ACTION MOVIES": "LAM", "ADD NEW DATA": "AND"}
   choice = st.selectbox("Select your choice", [None] + list(FILES.keys()), key="choice_key")
   if choice is not None:
-    main(choice, FILES[choice])
+    if FILES[choice] == "AND":
+      editFile()
+    else:
+      main(choice, FILES[choice])
   else:
     st.info("Please select a category to watch the videos.", icon="ℹ️")
   st.markdown("<hr>", unsafe_allow_html=True)

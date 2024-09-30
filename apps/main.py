@@ -4,7 +4,6 @@ import streamlit as st
 import gdown
 import json
 
-@st.cache_resource
 def load_data(FILE):
     gdown.download(f"https://drive.google.com/uc?id={st.secrets[FILE]}", f'{FILE.lower()}.json', quiet=False)
 

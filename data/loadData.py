@@ -1,7 +1,6 @@
 import streamlit as st
 import json
 
-@st.cache_resource
 def loadData(category, file_path):
     try:
         with open(file_path) as f:

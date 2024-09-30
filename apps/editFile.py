@@ -8,6 +8,7 @@ import json
 FILE = {"ANIMATED WORLD": "ACG", "LIVE ACTION MOVIES": "LAM"}
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
+@st.cache_resource
 def get_drive_service():
     gdown.download(f"https://drive.google.com/uc?id={st.secrets['SERVICE_ACCOUNT_FILE']}", 'credentials.json', quiet=False)
     creds = service_account.Credentials.from_service_account_file('credentials.json', scopes=SCOPES)

@@ -168,3 +168,5 @@ secrets.toml
 *.toml
 *.json
 *.mp4
+*.csv
+*.pkl

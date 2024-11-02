@@ -1,5 +1,4 @@
 import streamlit as st
-import webbrowser
 
 # Importing the helper functions
 from data.loadData import loadData

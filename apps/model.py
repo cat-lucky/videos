@@ -6,21 +6,8 @@ import pandas as pd
 import numpy as np
 import datetime
 import pickle
-import gdown
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
-
-@st.cache_resource
-def downloadModels():
-    gdown.download(f"https://drive.google.com/uc?id={st.secrets['DATA']}", 'data.csv', quiet=False)
-    gdown.download(f"https://drive.google.com/uc?id={st.secrets['LOGISTIC']}", 'logistic_regression.pkl', quiet=False)
-    gdown.download(f"https://drive.google.com/uc?id={st.secrets['DECISION_TREE']}", 'decision_tree.pkl', quiet=False)
-    gdown.download(f"https://drive.google.com/uc?id={st.secrets['RANDOM_FOREST']}", 'random_forest.pkl', quiet=False)
-    gdown.download(f"https://drive.google.com/uc?id={st.secrets['SVM']}", 'support_vector_machine.pkl', quiet=False)
-    gdown.download(f"https://drive.google.com/uc?id={st.secrets['KNN']}", 'k_nearest_neighbors.pkl', quiet=False)
-    gdown.download(f"https://drive.google.com/uc?id={st.secrets['NAIVE_BAYES']}", 'naive_bayes.pkl', quiet=False)
-    gdown.download(f"https://drive.google.com/uc?id={st.secrets['XGB']}", 'xgboost.pkl', quiet=False)
-    gdown.download(f"https://drive.google.com/uc?id={st.secrets['VOTING']}", 'voting_classifier.pkl', quiet=False)
 
 def load_models():
     models = {
@@ -36,7 +23,6 @@ def load_models():
     return models
 
 def modelPredict():
-    downloadModels()
     df = pd.read_csv('data.csv')
 
     min_date = datetime.datetime.today() + datetime.timedelta(days=1)
@@ -51,16 +37,25 @@ def modelPredict():
     input_features = np.array([[date.weekday(), date.day, date.month, date.year, is_weekday, last_row_status, rolling_3]])
     models = load_models()
     if st.button("Predict"):
+        prediction_data = []
+        count = 0
         for model_name, model in models.items():
             prob = model.predict_proba(input_features)[0][1]
-            st.info(f"{model_name} predicts: {prob:.2f}")
+            prediction_data.append({
+                "Model": model_name,
+                'Probability': prob,
+                'Prediction': True if prob > 0.5 else 'False'
+            })
+            if prob > 0.5: count = count + 1
+        df_predictions = pd.DataFrame(prediction_data)
+        st.subheader("Model Predictions")
+        st.table(df_predictions)
+        st.success(f"Success rate: {round((count/8)*100, 2)}%", icon="✅")
 
 @st.cache_resource
 def get_drive_service():
-    gdown.download(f"https://drive.google.com/uc?id={st.secrets['SERVICE_ACCOUNT_FILE']}", 'credentials.json', quiet=False)
     creds = service_account.Credentials.from_service_account_file('credentials.json', scopes=SCOPES)
     return build('drive', 'v3', credentials=creds)
-
 
 def upload_to_drive(file_path, file_id):
     try:
@@ -90,7 +85,7 @@ def saveData():
         st.toast(f"Status for {today} has been saved successfully!", icon="✅")
 
 def modelApp():
-    choiceM = st.selectbox("Are you want to see model prediction or save today's data?", ['Model Prediction', 'Save Data'])
+    choiceM = st.sidebar.selectbox("Are you want to see model prediction or save today's data?", ['Model Prediction', 'Save Data'])
     if choiceM == 'Model Prediction':
         modelPredict()
     else:

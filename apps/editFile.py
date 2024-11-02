@@ -2,14 +2,12 @@ from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from googleapiclient.http import MediaFileUpload
 import streamlit as st
-import gdown
 import json
 
 FILE = {"ANIMATED WORLD": "ACG", "LIVE ACTION MOVIES": "LAM"}
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
 def get_drive_service():
-    gdown.download(f"https://drive.google.com/uc?id={st.secrets['SERVICE_ACCOUNT_FILE']}", 'credentials.json', quiet=False)
     creds = service_account.Credentials.from_service_account_file('credentials.json', scopes=SCOPES)
     return build('drive', 'v3', credentials=creds)
 
@@ -34,30 +32,19 @@ def upload_to_drive(file_path, file_id):
         st.error(f"An error occurred while uploading: {e}", icon="🚫")
         return None
 
-def load_data(file_id):
-    try:
-        gdown.download(f"https://drive.google.com/uc?id={file_id}", f'{file_id.lower()}.json', quiet=False)
-        return True
-    except Exception as e:
-        st.error(f"An error occurred: {e}", icon="🚫")
-        return False
-
 def editFile():
     choice = st.selectbox("Which file do you want to edit?", [None] + list(FILE.keys()))
 
     if choice:
-        file_id = st.secrets[FILE[choice]]
+        file_id = st.secrets['data'][FILE[choice]]
         JSON_FILE_PATH = f'{FILE[choice].lower()}.json'
-        
-        if load_data(file_id):
-            service = get_drive_service()
-            data = load_json(JSON_FILE_PATH)
-            action = st.radio("What would you like to do?", ["Add New Entry", "Edit Existing Entry"])
+        data = load_json(JSON_FILE_PATH)
+        action = st.radio("What would you like to do?", ["Add New Entry", "Edit Existing Entry"])
 
-            if action == "Edit Existing Entry":
-                updateEntry(data, JSON_FILE_PATH, file_id)
-            elif action == "Add New Entry":
-                addNewEntry(data, JSON_FILE_PATH, file_id)
+        if action == "Edit Existing Entry":
+            updateEntry(data, JSON_FILE_PATH, file_id)
+        elif action == "Add New Entry":
+            addNewEntry(data, JSON_FILE_PATH, file_id)
 
 def updateEntry(data, JSON_FILE_PATH, file_id):
     if len(data) > 0:
